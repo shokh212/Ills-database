@@ -1,0 +1,28 @@
+import sqlite3
+
+conn = sqlite3.connect("data.db") #faylga ulanish
+c=conn.cursor() #Qolimiz
+
+c.execute('''CREATE TABLE IF NOT EXISTS bemorlar(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    illness TEXT
+                )''')
+conn.commit() #Ozgarishlarni tasdiqlash (refresh)
+
+def add_ill(name,age,illness):
+    c.execute('''INSERT INTO bemorlar(name,age,illness) VALUES(?,?,?)''' , (name,age,illness,))
+    conn.commit()
+
+def show_list(id):
+        a = c.execute('''SELECT name, age, illness FROM bemorlar WHERE id=?''',(id,)).fetchall()
+        return a
+
+while True:
+    name = input("Enter name:")
+    age = input("Enter age:")
+    illness = input("Enter illness:")
+    bemor_id = int(input("Bemorni id sini kiritng:"))
+    add_ill(name,age,illness)
+    print(show_list(bemor_id))
